@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\ChicaHeros.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\ChicaHeros.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\ChicaHerosEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Config\Mac">
+      <UniqueIdentifier>{C34A53DE-7A2E-391F-9292-A84444E41B18}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\Mac\MacEngine.ini">
+      <Filter>Config\Mac</Filter>
+    </None>
+    <Filter Include="Config\VisionOS">
+      <UniqueIdentifier>{54FB6262-BE34-3FD1-8608-DAEF798947B6}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\VisionOS\VisionOSEngine.ini">
+      <Filter>Config\VisionOS</Filter>
+    </None>
+    <Filter Include="Source\ChicaHeros">
+      <UniqueIdentifier>{01584CBE-0E43-3B1C-9E09-ED96976B7413}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\ChicaHeros\ChicaHeros.Build.cs">
+      <Filter>Source\ChicaHeros</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\ChicaHeros\ChicaHeros.cpp">
+      <Filter>Source\ChicaHeros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ChicaHeros\ChicaHeros.h">
+      <Filter>Source\ChicaHeros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ChicaHeros\HPwidget.cpp">
+      <Filter>Source\ChicaHeros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ChicaHeros\HPwidget.h">
+      <Filter>Source\ChicaHeros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ChicaHeros\MyPlayerController.cpp">
+      <Filter>Source\ChicaHeros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ChicaHeros\MyPlayerController.h">
+      <Filter>Source\ChicaHeros</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "ChicaHeros",
+			"Path": "..\\Source\\ChicaHeros.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "ChicaHerosEditor",
+			"Path": "..\\Source\\ChicaHerosEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

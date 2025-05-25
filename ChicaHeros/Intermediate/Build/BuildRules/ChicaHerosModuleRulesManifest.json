@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"C:\\ChicaHeros\\ChicaHeros\\Source\\ChicaHeros\\ChicaHeros.Build.cs",
+		"C:\\ChicaHeros\\ChicaHeros\\Source\\ChicaHeros.Target.cs",
+		"C:\\ChicaHeros\\ChicaHeros\\Source\\ChicaHerosEditor.Target.cs"
+	],
+	"EngineVersion": "5.5.4"
+}

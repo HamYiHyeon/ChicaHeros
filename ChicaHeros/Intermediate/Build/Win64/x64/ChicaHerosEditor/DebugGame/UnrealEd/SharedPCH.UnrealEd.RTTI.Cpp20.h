@@ -1,0 +1,3 @@
+// PCH for Editor/UnrealEd/Public/UnrealEdSharedPCH.h
+#include "C:/ChicaHeros/ChicaHeros/Intermediate/Build/Win64/x64/ChicaHerosEditor/DebugGame/UnrealEd/SharedDefinitions.UnrealEd.RTTI.Cpp20.h"
+#include "Editor/UnrealEd/Public/UnrealEdSharedPCH.h"

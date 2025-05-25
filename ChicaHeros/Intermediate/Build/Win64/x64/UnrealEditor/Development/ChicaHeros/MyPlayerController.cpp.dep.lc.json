@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\chicaheros\\chicaheros\\source\\chicaheros\\myplayercontroller.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\chicaheros\\chicaheros\\intermediate\\build\\win64\\x64\\chicaheroseditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.inclorderunreal5_3.h.pch",
+        "Includes": [
+            "c:\\chicaheros\\chicaheros\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\chicaheros\\definitions.chicaheros.h",
+            "c:\\chicaheros\\chicaheros\\source\\chicaheros\\myplayercontroller.h",
+            "c:\\chicaheros\\chicaheros\\intermediate\\build\\win64\\unrealeditor\\inc\\chicaheros\\uht\\myplayercontroller.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
