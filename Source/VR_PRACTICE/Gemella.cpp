@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "UObject/ConstructorHelpers.h"
+#include "StageManager.h"
 
 AGemella::AGemella() {
     PrimaryActorTick.bCanEverTick = true;
@@ -19,6 +20,16 @@ void AGemella::BeginPlay()
 {
     Super::BeginPlay();
 
+    PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    if (PlayerPawn)
+    {
+        CameraComp = PlayerPawn->FindComponentByClass<UCameraComponent>();
+    }
+    AStageManager* StageManager = Cast<AStageManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AStageManager::StaticClass()));
+    if (StageManager)
+    {
+        StageManager->RegisterBacteria(this);
+    }
     // 일정 시간마다 보호막 부여 함수 실행
     GetWorld()->GetTimerManager().SetTimer(
         ShieldGrantTimer,
@@ -33,10 +44,6 @@ void AGemella::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     if (!PlayerPawn || !CameraComp) return;
-    if (Wait > 0.f) {
-        Wait -= DeltaTime;
-        return;
-    }
     if (MaxSpeed > MoveSpeed) MoveSpeed += IncSpeed;
 
     FVector ToPlayer = PlayerPawn->GetActorLocation() - GetActorLocation();
