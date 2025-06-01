@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "MyActor.generated.h"
+#include "NanoRobot.generated.h"
 
 UCLASS()
-class VR_PRACTICE_API AMyActor : public AActor
+class VR_PRACTICE_API ANanoRobot : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AMyActor();
+	ANanoRobot();
 
 protected:
 	// Called when the game starts or when spawned
@@ -23,4 +23,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	bool first = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int StageCleared = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Danceindex = 0;
 };

@@ -18,11 +18,6 @@ ATreponema::ATreponema() {
 void ATreponema::Tick(float DeltaTime) {
     Super::Tick(DeltaTime);
 
-    if (Wait > 0.f) {
-        Wait -= DeltaTime;
-        return;
-    }
-
     if (!PlayerPawn || !CameraComp) return;
 
     FVector ToPlayer = PlayerPawn->GetActorLocation() - GetActorLocation();
@@ -63,7 +58,7 @@ void ATreponema::HandleAttackState(float DeltaTime)
 
     // 투사체 쿨다운
     FireTimer += DeltaTime;
-    UE_LOG(LogTemp, Warning, TEXT("FireTimer: %.2f"), FireTimer);
+    //UE_LOG(LogTemp, Warning, TEXT("FireTimer: %.2f"), FireTimer);
     if (FireTimer >= FireInterval)
     {
         FireProjectileAt(CameraComp->GetComponentLocation());
@@ -89,6 +84,7 @@ void ATreponema::MoveToward(FVector TargetLocation, float DeltaTime)
         // 4. 항상 현재 정수리 방향으로 이동
         FVector Movement = GetActorUpVector() * CurMoveSpeed * DeltaTime;
         AddActorWorldOffset(Movement, true);
+
         CurMoveSpeed -= 2.0f;
     }
     else {

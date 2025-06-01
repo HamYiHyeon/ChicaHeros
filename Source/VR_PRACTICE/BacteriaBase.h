@@ -5,6 +5,8 @@
 #include "Camera/CameraComponent.h"
 #include "BacteriaBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerAttacked);
+
 UCLASS()
 class VR_PRACTICE_API ABacteriaBase : public AActor
 {
@@ -16,7 +18,7 @@ public:
     virtual void Tick(float DeltaTime) override;
 
     // 데미지 입는 함수
-    virtual float TakeDamage(float DamageAmount);
+    virtual float TakeDamageBac(float DamageAmount);
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
     float Shield = 0.f;
@@ -24,12 +26,13 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
     float MaxShield = 50.f;
 
+    UPROPERTY(BlueprintAssignable)
+    FOnPlayerAttacked OnPlayerAttacked;
+
 protected:
     virtual void BeginPlay() override;
+    virtual void Destroyed() override;
 
-    UPROPERTY(EditAnywhere, Category = "Bacteria")
-    float Wait;
-    float WaitTime = 1.5f;
     // 체력
     UPROPERTY(EditAnywhere, Category = "Bacteria")
     float Health;

@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
 #include "UObject/ConstructorHelpers.h"
+#include "StageManager.h"
 
 ABacteriaBase::ABacteriaBase()
 {
@@ -13,7 +14,11 @@ ABacteriaBase::ABacteriaBase()
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
     RootComponent = MeshComponent;
 
+    MeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     MeshComponent->SetCollisionObjectType(ECC_GameTraceChannel1); // "Bacteria" 채널
+
+    MeshComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+
     MeshComponent->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore); // 서로 무시
 
     // 초기 체력
@@ -29,7 +34,11 @@ void ABacteriaBase::BeginPlay()
     {
         CameraComp = PlayerPawn->FindComponentByClass<UCameraComponent>();
     }
-    Wait = FMath::FRandRange(0.f, WaitTime);
+    AStageManager* StageManager = Cast<AStageManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AStageManager::StaticClass()));
+    if (StageManager)
+    {
+        StageManager->RegisterBacteria(this);
+    }
 }
 
 void ABacteriaBase::Tick(float DeltaTime)
@@ -41,7 +50,7 @@ void ABacteriaBase::Tick(float DeltaTime)
     }
 }
 
-float ABacteriaBase::TakeDamage(float DamageAmount)
+float ABacteriaBase::TakeDamageBac(float DamageAmount)
 {
     float RemainingDamage = DamageAmount;
 
@@ -64,4 +73,15 @@ float ABacteriaBase::TakeDamage(float DamageAmount)
     }
 
     return DamageAmount;
+}
+
+void ABacteriaBase::Destroyed()
+{
+    Super::Destroyed();
+
+    AStageManager* StageManager = Cast<AStageManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AStageManager::StaticClass()));
+    if (StageManager)
+    {
+        StageManager->UnregisterBacteria(this);
+    }
 }
