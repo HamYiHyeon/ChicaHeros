@@ -57,6 +57,8 @@ void AProjectile::Tick(float DeltaTime)
     Distance = FVector::Dist(GetActorLocation(), CameraComp->GetComponentLocation());
     if (Distance < AttackRange)
     {
+        OnPlayerAttacked.Broadcast();
+        UE_LOG(LogTemp, Warning, TEXT("АјАн!"));
         UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
         Destroy();
     }

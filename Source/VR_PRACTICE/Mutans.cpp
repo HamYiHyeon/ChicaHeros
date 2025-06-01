@@ -18,10 +18,6 @@ void AMutans::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     if (!PlayerPawn || !CameraComp) return;
-    if (Wait > 0.f) {
-        Wait -= DeltaTime;
-        return;
-    }
     if (MaxSpeed > MoveSpeed) MoveSpeed += IncSpeed;
 
     // 1. 플레이어 방향 벡터
@@ -42,6 +38,7 @@ void AMutans::Tick(float DeltaTime)
     Distance = FVector::Dist(GetActorLocation(), CameraComp->GetComponentLocation());
     if (Distance < AttackRange)
     {
+        OnPlayerAttacked.Broadcast();
         UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
         Destroy();
     }

@@ -18,10 +18,6 @@ void APorphy::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     if (!PlayerPawn || !CameraComp) return;
-    if (Wait > 0.f) {
-        Wait -= DeltaTime;
-        return;
-    }
     if (MaxSpeed > MoveSpeed) MoveSpeed += IncSpeed;
 
     // 3. 전방위 회전 (X, Y, Z축으로 천천히)
@@ -40,6 +36,7 @@ void APorphy::Tick(float DeltaTime)
     Distance = FVector::Dist(GetActorLocation(), CameraComp->GetComponentLocation());
     if (Distance < AttackRange)
     {
+        OnPlayerAttacked.Broadcast();
         UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
         Destroy();
     }

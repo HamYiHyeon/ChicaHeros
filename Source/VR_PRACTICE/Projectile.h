@@ -6,10 +6,11 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Camera/CameraComponent.h"
+#include "BacteriaBase.h"
 #include "Projectile.generated.h"
 
 UCLASS()
-class VR_PRACTICE_API AProjectile : public AActor
+class VR_PRACTICE_API AProjectile : public ABacteriaBase
 {
 	GENERATED_BODY()
 
@@ -32,22 +33,4 @@ public:
 	// 이동용 컴포넌트 (예: Projectile Movement)
 	UPROPERTY(VisibleAnywhere)
 	class UProjectileMovementComponent* ProjectileMovement;
-	// 플레이어 참조
-	UPROPERTY()
-	UCameraComponent* CameraComp;
-
-	// 플레이어 참조
-	UPROPERTY(EditAnywhere, Category = "Projectile")
-	APawn* PlayerPawn;
-
-	// 공격력
-	UPROPERTY(EditAnywhere, Category = "Projectile")
-	float AttackPower = 10.f;
-
-	// 공격 범위
-	UPROPERTY(EditAnywhere, Category = "Projectile")
-	float AttackRange = 70.f;
-
-	UPROPERTY(VisibleAnywhere, Category = "Projectile")
-	float Distance;
 };

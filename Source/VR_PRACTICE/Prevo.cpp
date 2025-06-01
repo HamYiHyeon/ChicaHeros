@@ -26,20 +26,17 @@ void APrevo::Tick(float DeltaTime)
     AddActorLocalRotation(SpinRotation);
 
     if (!PlayerPawn || !CameraComp) return;
-    if (Wait > 0.f) {
-        Wait -= DeltaTime;
-        return;
-    }
     if (MaxSpeed > MoveSpeed) MoveSpeed += IncSpeed;
 
     //테스트용 삭제 필요
-    //TakeDamage(0.2f);
+    TakeDamageBac(0.2f);
+
     if (bIsSpawning)
     {
         SpreadElapsedTime += DeltaTime;
 
         FVector NewLoc = FMath::VInterpTo(GetActorLocation(), TargetSpreadLocation, DeltaTime, SpreadInterpSpeed);
-        SetActorLocation(NewLoc);
+        SetActorLocation(NewLoc, true);
 
         if (SpreadElapsedTime >= SpreadDuration)
         {
@@ -65,13 +62,13 @@ void APrevo::Tick(float DeltaTime)
     if (Distance < AttackRange)
     {
         bIsFlyingToPlayer = false;
-
+        OnPlayerAttacked.Broadcast();
         UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
         Destroy();
     }
 }
 
-float APrevo::TakeDamage(float DamageAmount)
+float APrevo::TakeDamageBac(float DamageAmount)
 {
     float RemainingDamage = DamageAmount;
 
@@ -129,7 +126,6 @@ void APrevo::Split()
             NewClone->InitialHealth = InitialHealth * FMath::Pow(StatMultiplierPerSplit, NewClone->CurrentSplitLevel);
             NewClone->AttackPower = InitialAttackPower * FMath::Pow(StatMultiplierPerSplit, NewClone->CurrentSplitLevel);
             NewClone->MoveSpeed = MoveSpeed;
-            NewClone->WaitTime = 0.f;
             UGameplayStatics::FinishSpawningActor(NewClone, SpawnTransform);
         }
     }

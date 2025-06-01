@@ -18,10 +18,6 @@ void ALacto::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     if (!PlayerPawn || !CameraComp) return;
-    if (Wait > 0.f) {
-        Wait -= DeltaTime;
-        return;
-    }
     if (MaxSpeed > MoveSpeed) MoveSpeed += IncSpeed;
 
     // 1. 플레이어 방향 벡터
@@ -43,6 +39,7 @@ void ALacto::Tick(float DeltaTime)
     //UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), Distance);
     if (Distance < AttackRange)
     {
+        OnPlayerAttacked.Broadcast();
         UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
         Destroy();
     }
