@@ -34,14 +34,16 @@ void AStageManager::UnregisterBacteria(ABacteriaBase* Bacteria)
 {
 	if (Bacteria)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Destroyed: %s"), *Bacteria->GetName());
 		RegisteredBacteria.Remove(Bacteria);
 	}
 }
 
-void AStageManager::HandlePlayerAttacked()
+void AStageManager::HandlePlayerAttacked(ABacteriaBase* Attacker)
 {
 	UE_LOG(LogTemp, Warning, TEXT("플레이어가 박테리아에게 공격당함!"));
-	OnPlayerAttackedBP(); // 블루프린트 연출 호출
+	float Damage = Attacker->AttackPower;
+	OnPlayerAttackedBP(Damage); // 블루프린트 연출 호출
 }
 
 // Called every frame

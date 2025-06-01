@@ -62,7 +62,7 @@ void APrevo::Tick(float DeltaTime)
     if (Distance < AttackRange)
     {
         bIsFlyingToPlayer = false;
-        OnPlayerAttacked.Broadcast();
+        OnPlayerAttacked.Broadcast(this);
         UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
         Destroy();
     }

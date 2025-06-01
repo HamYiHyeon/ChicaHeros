@@ -32,10 +32,13 @@ public:
 	TArray<ABacteriaBase*> RegisteredBacteria;
 
 	UFUNCTION()
-	void HandlePlayerAttacked();
+	void HandlePlayerAttacked(ABacteriaBase* Attacker);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
-	void OnPlayerAttackedBP();
+	void OnPlayerAttackedBP(float Damage);
+
+	UFUNCTION(BlueprintCallable, Category = "Stage")
+	void TickDisable();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APostProcessVolume* TargetPostProcessVolume;
@@ -98,5 +101,4 @@ private:
 	void StartFirstStage();
 	void SpawnNextEnemy();
 	void SpawnEnemy(TSubclassOf<ABacteriaBase> Enemy1, int Enemy1Count, TSubclassOf<ABacteriaBase> Enemy2, int Enemy2Count);
-	void TickDisable();
 };

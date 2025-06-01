@@ -100,10 +100,9 @@ void ATreponema::FireProjectileAt(FVector Target)
     FRotator SpawnRot = (Target - SpawnLoc).Rotation();
 
     AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLoc, SpawnRot);
-    if (Projectile && Projectile->ProjectileMovement)
+    if (Projectile)
     {
         FVector LaunchDir = (Target - SpawnLoc).GetSafeNormal();
-        Projectile->ProjectileMovement->Velocity = LaunchDir * Projectile->ProjectileMovement->InitialSpeed;
         Projectile->SphereMesh->IgnoreActorWhenMoving(this, true);
     }
 }

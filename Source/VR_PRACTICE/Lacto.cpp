@@ -39,7 +39,7 @@ void ALacto::Tick(float DeltaTime)
     //UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), Distance);
     if (Distance < AttackRange)
     {
-        OnPlayerAttacked.Broadcast();
+        OnPlayerAttacked.Broadcast(this);
         UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
         Destroy();
     }

@@ -5,7 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "BacteriaBase.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerAttacked);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerAttacked, ABacteriaBase*, Attacker);
 
 UCLASS()
 class VR_PRACTICE_API ABacteriaBase : public AActor
@@ -29,6 +29,10 @@ public:
     UPROPERTY(BlueprintAssignable)
     FOnPlayerAttacked OnPlayerAttacked;
 
+    // 공격력
+    UPROPERTY(EditAnywhere, Category = "Bacteria")
+    float AttackPower = 10.f;
+
 protected:
     virtual void BeginPlay() override;
     virtual void Destroyed() override;
@@ -49,10 +53,6 @@ protected:
     // 회전 속도
     UPROPERTY(EditAnywhere, Category = "Bacteria")
     float TrackingSpeed = 1.5f;
-
-    // 공격력
-    UPROPERTY(EditAnywhere, Category = "Bacteria")
-    float AttackPower = 10.f;
 
     // 공격 범위
     UPROPERTY(EditAnywhere, Category = "Bacteria")
