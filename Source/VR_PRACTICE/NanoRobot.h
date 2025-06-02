@@ -29,5 +29,5 @@ public:
 	int StageCleared = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Danceindex = 0;
+	int DanceIndex = 0;
 };
