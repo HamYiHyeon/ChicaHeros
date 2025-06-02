@@ -53,7 +53,7 @@ void AStageManager::Tick(float DeltaTime)
 
 	if (!bStageStarted) return; // 3초 딜레이 전에는 아무것도 안 함
 
-	if(!bCleared) Time -= DeltaTime;
+	Time -= DeltaTime;
 
 	if (StageNum == 1 && Time <= 60.f) {
 		StageNum++;
@@ -64,21 +64,11 @@ void AStageManager::Tick(float DeltaTime)
 		SpawnEnemy(Stage3Enemy1, Stage3Enemy1Count, Stage3Enemy2, Stage3Enemy2Count);
 	}
 
-	if (bAllSpawned && RegisteredBacteria.IsEmpty()) {
+	if (Time < 0) {
 		UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
 		if (GI) {
 			GI->bStageCleared = true;
 		}
-		bCleared = true;
-		GameClear();
-	}
-	else if(Time <= 0.f) {
-		UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
-		if (GI) {
-			GI->bStageCleared = false;
-		}
-		bCleared = true;
-		TimeOver();
 	}
 }
 
@@ -101,7 +91,6 @@ void AStageManager::SpawnNextEnemy()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
 
-		if (StageNum == 3 && SpawnPhase == 2) bAllSpawned = true;
 		if (SpawnPhase == 1)
 		{
 			// Enemy1 다 소환했으므로 Enemy2 시작

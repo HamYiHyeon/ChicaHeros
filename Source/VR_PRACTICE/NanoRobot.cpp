@@ -16,20 +16,19 @@ ANanoRobot::ANanoRobot()
 void ANanoRobot::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	if (first) {
+		first = false;
+		return;
+	}
     UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
-	if(GI && !GI->GameStart) {
-		GI->GameStart = true;
+	if (GI && GI->bStageCleared) {
+		StageCleared = 1;
 	}
-	else {
-		if (GI->bStageCleared) {
-			StageCleared = 1;
-		}
-		else if (!GI->bStageCleared) {
-			StageCleared = -1;
-		}
-		else StageCleared = 0;
+	else if (GI && !GI->bStageCleared) {
+		StageCleared = -1;
 	}
-	DanceIndex = FMath::RandRange(0, 2);
+	else StageCleared = 0;
 }
 
 // Called every frame

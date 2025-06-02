@@ -37,12 +37,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
 	void OnPlayerAttackedBP(float Damage);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
-	void TimeOver();
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
-	void GameClear();
-
 	UFUNCTION(BlueprintCallable, Category = "Stage")
 	void TickDisable();
 
@@ -51,9 +45,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APawn* PlayerPawn;
-
-	UPROPERTY(BlueprintReadWrite)
-	bool bCleared = false;
 
 private:
 	// 현재 등록된 박테리아들
@@ -104,7 +95,6 @@ private:
 	int32 Count2;
 
 	int32 SpawnPhase; // 1 또는 2
-	bool bAllSpawned = false;
 
 	FVector SpawnOrigin;
 	float SpawnRadius;
