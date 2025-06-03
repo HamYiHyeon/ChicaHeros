@@ -21,4 +21,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool GameStart = false;
 
+	UPROPERTY(BlueprintReadWrite)
+	int MaxWeaponIndex = 0;
 };
