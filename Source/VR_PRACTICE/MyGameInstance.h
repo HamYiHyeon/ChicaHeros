@@ -15,6 +15,8 @@ class VR_PRACTICE_API UMyGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 public:
+	UMyGameInstance();
+
 	UPROPERTY(BlueprintReadWrite)
 	bool bStageCleared = false;
 
@@ -23,4 +25,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	int MaxWeaponIndex = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	TArray<bool> UnlockWeapon;
+
+	UPROPERTY(BlueprintReadWrite)
+	int Gold = 0;
 };
