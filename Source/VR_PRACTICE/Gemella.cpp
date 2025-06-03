@@ -32,7 +32,7 @@ void AGemella::BeginPlay()
     }
     NiagaraEffect = LoadObject<UNiagaraSystem>(
         nullptr,
-        TEXT("/Game/Niagara/NS_ShieldWave.NS_ShieldWave")
+        TEXT("/Game/Niagara/NS_Wave.NS_Wave")
     );
     // 일정 시간마다 보호막 부여 함수 실행
     GetWorld()->GetTimerManager().SetTimer(
