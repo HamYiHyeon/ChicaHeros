@@ -35,7 +35,6 @@ AProjectile::AProjectile()
     ProjectileMovement->bShouldBounce = false;
     ProjectileMovement->ProjectileGravityScale = 0.0f;
     */
-    Health = 0;
     MoveSpeed = 1500.f;
     // 충돌시 자동 제거 등 추가 설정 가능
     InitialLifeSpan = 3.0f;
