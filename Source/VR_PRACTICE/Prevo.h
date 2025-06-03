@@ -18,7 +18,8 @@ public:
 	APrevo();
 
 protected:
-    virtual void OnDeath() override;
+    virtual float TakeDamageBac(float DamageAmount) override;
+;
 	virtual void Tick(float DeltaTime) override;
 
     void Split();

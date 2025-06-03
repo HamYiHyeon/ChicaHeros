@@ -5,8 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "BacteriaBase.h"
-#include "NiagaraFunctionLibrary.h"
-#include "NiagaraSystem.h"
 #include "StageManager.generated.h"
 
 UCLASS()
@@ -58,7 +56,7 @@ public:
 	bool bCleared = false;
 
 private:
-	UNiagaraSystem* NiagaraEffect;
+	// 현재 등록된 박테리아들
 
 	UPROPERTY(VisibleAnywhere, Category = "StageSystem")
 	int StageNum = 0;

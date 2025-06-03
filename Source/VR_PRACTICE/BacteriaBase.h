@@ -3,8 +3,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Camera/CameraComponent.h"
-#include "NiagaraFunctionLibrary.h"
-#include "NiagaraSystem.h"
 #include "BacteriaBase.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerAttacked, ABacteriaBase*, Attacker);
@@ -18,7 +16,6 @@ public:
     ABacteriaBase();
 
     virtual void Tick(float DeltaTime) override;
-    virtual void OnDeath() {};
 
     // 데미지 입는 함수
     virtual float TakeDamageBac(float DamageAmount);
@@ -36,11 +33,6 @@ public:
     UPROPERTY(EditAnywhere, Category = "Bacteria")
     float AttackPower = 10.f;
 
-    UStaticMeshComponent* ShieldMesh;
-
-    float getHealth();
-
-    UNiagaraSystem* NiagaraEffect;
 protected:
     virtual void BeginPlay() override;
     virtual void Destroyed() override;
