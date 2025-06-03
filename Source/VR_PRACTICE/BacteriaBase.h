@@ -60,7 +60,7 @@ protected:
 
     // 회전 속도
     UPROPERTY(EditAnywhere, Category = "Bacteria")
-    float TrackingSpeed = 1.5f;
+    float TrackingSpeed = 0.8f;
 
     // 공격 범위
     UPROPERTY(EditAnywhere, Category = "Bacteria")

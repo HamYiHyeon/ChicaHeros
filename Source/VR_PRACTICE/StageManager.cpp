@@ -2,7 +2,6 @@
 
 
 #include "StageManager.h"
-#include "MyGameInstance.h"
 #include <Kismet/GameplayStatics.h>
 
 // Sets default values
@@ -71,18 +70,22 @@ void AStageManager::Tick(float DeltaTime)
 	}
 
 	if (bAllSpawned && RegisteredBacteria.IsEmpty()) {
+		/*
 		UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
 		if (GI) {
 			GI->bStageCleared = true;
 		}
+		*/
 		bCleared = true;
 		GameClear();
 	}
 	else if(Time <= 0.f) {
+		/*
 		UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
 		if (GI) {
 			GI->bStageCleared = false;
 		}
+		*/
 		bCleared = true;
 		TimeOver();
 	}
@@ -148,8 +151,8 @@ void AStageManager::SpawnNextEnemy()
 
 void AStageManager::SpawnEnemy(TSubclassOf<ABacteriaBase> Enemy1, int Enemy1Count, TSubclassOf<ABacteriaBase> Enemy2, int Enemy2Count)
 {
-	SpawnOrigin = GetActorLocation() + FVector(0.f, 0.f, 1300.f);
-	SpawnRadius = 2000.f;
+	SpawnOrigin = GetActorLocation() + FVector(0.f, 0.f, 1400.f);
+	SpawnRadius = 1900.f;
 
 	// 스폰 범위 시각화
 	DrawDebugSphere(

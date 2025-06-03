@@ -9,6 +9,36 @@
 #include "NiagaraSystem.h"
 #include "StageManager.generated.h"
 
+USTRUCT(BlueprintType)
+struct FEnemy
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ABacteriaBase> Enemy;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int EnemyCount;
+};
+
+USTRUCT(BlueprintType)
+struct FWave
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FEnemy> Wave;
+};
+
+USTRUCT(BlueprintType)
+struct FStage
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FWave> Wave;
+};
+
 UCLASS()
 class VR_PRACTICE_API AStageManager : public AActor
 {
@@ -30,6 +60,9 @@ public:
 	void RegisterBacteria(ABacteriaBase* Bacteria);
 	void UnregisterBacteria(ABacteriaBase* Bacteria);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stage")
+	TArray<FStage> Stage;
+
 	UPROPERTY(BlueprintReadOnly)
 	TArray<ABacteriaBase*> RegisteredBacteria;
 
@@ -38,6 +71,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
 	void OnPlayerAttackedBP(float Damage);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
+	void GameResult();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
 	void TimeOver();
@@ -114,3 +150,4 @@ private:
 	void SpawnNextEnemy();
 	void SpawnEnemy(TSubclassOf<ABacteriaBase> Enemy1, int Enemy1Count, TSubclassOf<ABacteriaBase> Enemy2, int Enemy2Count);
 };
+

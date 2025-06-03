@@ -31,6 +31,8 @@ protected:
 
 	void GrantShieldsToNearbyBacteria();
 
+	TArray<ABacteriaBase*> BacteriaList;
+
 	UPROPERTY(VisibleAnywhere)
 	EGemellaState CurrentState = EGemellaState::Approaching;
 

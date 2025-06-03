@@ -2,7 +2,6 @@
 
 
 #include "NanoRobot.h"
-#include "MyGameInstance.h"
 
 // Sets default values
 ANanoRobot::ANanoRobot()
@@ -16,7 +15,9 @@ ANanoRobot::ANanoRobot()
 void ANanoRobot::BeginPlay()
 {
 	Super::BeginPlay();
-    UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
+	//ClearResult();
+	/*
+    UGameInstance* GI = Cast<UGameInstance>(GetGameInstance());
 	if(GI && !GI->GameStart) {
 		GI->GameStart = true;
 	}
@@ -29,7 +30,8 @@ void ANanoRobot::BeginPlay()
 		}
 		else StageCleared = 0;
 	}
-	DanceIndex = FMath::RandRange(0, 2);
+	*/
+	//DanceIndex = FMath::RandRange(0, 2);
 }
 
 // Called every frame

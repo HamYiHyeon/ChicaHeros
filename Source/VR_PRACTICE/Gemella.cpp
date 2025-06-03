@@ -89,13 +89,9 @@ void AGemella::GrantShieldsToNearbyBacteria()
         GetActorLocation(),     // 바로 자기 위치!
         GetActorRotation()     // 혹은 카메라 방향 등, 원하는 회전값
     );
-
-    TArray<AActor*> BacteriaList;
-    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABacteriaBase::StaticClass(), BacteriaList);
-
-    for (AActor* Actor : BacteriaList)
+    BacteriaList = Cast<AStageManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AStageManager::StaticClass()))->RegisteredBacteria;
+    for (ABacteriaBase* Bacteria : BacteriaList)
     {
-        ABacteriaBase* Bacteria = Cast<ABacteriaBase>(Actor);
         if (!Bacteria || Bacteria == this) continue;
         if (Bacteria->Shield <= 0.f && Bacteria->getHealth() > 0) // 보호막이 없을 때만 부여
         {
