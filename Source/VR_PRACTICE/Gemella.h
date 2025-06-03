@@ -27,7 +27,6 @@ public:
 protected:
 	virtual void Tick(float DeltaTime) override;
 	virtual void BeginPlay() override;
-	virtual void OnDeath() override;
 
 	void GrantShieldsToNearbyBacteria();
 
@@ -39,7 +38,7 @@ protected:
 
 	FTimerHandle ShieldGrantTimer;
 	UPROPERTY(EditAnywhere, Category = "Shield")
-	float ShieldGrantInterval = 5.0f;
+	float ShieldGrantInterval = 10.0f;
 
 	FVector RandomMoveTarget;
 };

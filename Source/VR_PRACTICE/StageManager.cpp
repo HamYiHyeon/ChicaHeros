@@ -17,12 +17,6 @@ void AStageManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 1. 에셋 경로로 나이아가라 시스템 불러오기
-	NiagaraEffect = LoadObject<UNiagaraSystem>(
-		nullptr,
-		TEXT("/Game/Niagara/NS_Cloud.NS_Cloud")
-	);
-
 	// 3초 후 Stage 시작
 	GetWorldTimerManager().SetTimer(DelayStartHandle, this, &AStageManager::StartFirstStage, 3.0f, false);
 }
@@ -132,17 +126,8 @@ void AStageManager::SpawnNextEnemy()
 		FMath::FRandRange(0.f, 360.f),
 		FMath::FRandRange(0.f, 360.f)
 	);
+
 	GetWorld()->SpawnActor<ABacteriaBase>(CurrentClass, SpawnLoc, RandomRot);
-	if (NiagaraEffect)
-	{
-		// 2. 원하는 위치에 이펙트 생성
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
-			GetWorld(),
-			NiagaraEffect,
-			SpawnLoc,   // 현재 액터 위치(원하는 위치로 변경 가능)
-			RandomRot
-		);
-	}
 	SpawnedCount++;
 }
 
