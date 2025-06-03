@@ -3,3 +3,7 @@
 
 #include "MyGameInstance.h"
 
+UMyGameInstance::UMyGameInstance()
+{
+    UnlockWeapon.Init(false, 4);
+}
