@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "BacteriaBase.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraSystem.h"
 #include "StageManager.generated.h"
 
 UCLASS()
@@ -32,10 +34,19 @@ public:
 	TArray<ABacteriaBase*> RegisteredBacteria;
 
 	UFUNCTION()
-	void HandlePlayerAttacked();
+	void HandlePlayerAttacked(ABacteriaBase* Attacker);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
-	void OnPlayerAttackedBP();
+	void OnPlayerAttackedBP(float Damage);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
+	void TimeOver();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
+	void GameClear();
+
+	UFUNCTION(BlueprintCallable, Category = "Stage")
+	void TickDisable();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APostProcessVolume* TargetPostProcessVolume;
@@ -43,8 +54,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APawn* PlayerPawn;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool bCleared = false;
+
 private:
-	// 현재 등록된 박테리아들
+	UNiagaraSystem* NiagaraEffect;
 
 	UPROPERTY(VisibleAnywhere, Category = "StageSystem")
 	int StageNum = 0;
@@ -92,11 +106,11 @@ private:
 	int32 Count2;
 
 	int32 SpawnPhase; // 1 또는 2
+	bool bAllSpawned = false;
 
 	FVector SpawnOrigin;
 	float SpawnRadius;
 	void StartFirstStage();
 	void SpawnNextEnemy();
 	void SpawnEnemy(TSubclassOf<ABacteriaBase> Enemy1, int Enemy1Count, TSubclassOf<ABacteriaBase> Enemy2, int Enemy2Count);
-	void TickDisable();
 };

@@ -30,6 +30,10 @@ void AGemella::BeginPlay()
     {
         StageManager->RegisterBacteria(this);
     }
+    NiagaraEffect = LoadObject<UNiagaraSystem>(
+        nullptr,
+        TEXT("/Game/Niagara/NS_Wave.NS_Wave")
+    );
     // 일정 시간마다 보호막 부여 함수 실행
     GetWorld()->GetTimerManager().SetTimer(
         ShieldGrantTimer,
@@ -38,6 +42,11 @@ void AGemella::BeginPlay()
         ShieldGrantInterval,
         true // 반복 호출
     );
+}
+
+void AGemella::OnDeath()
+{
+    GetWorld()->GetTimerManager().ClearTimer(ShieldGrantTimer);
 }
 
 void AGemella::Tick(float DeltaTime)
@@ -70,6 +79,17 @@ void AGemella::Tick(float DeltaTime)
 
 void AGemella::GrantShieldsToNearbyBacteria()
 {
+    APlayerCameraManager* CamMgr = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+    FRotator CamRot = CamMgr->GetCameraRotation();
+
+    FRotator WaveRot = FRotator(0.f, CamRot.Yaw, 0.f);
+    UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+        GetWorld(),
+        NiagaraEffect,          // NiagaraSystem* (에디터에서 할당)
+        GetActorLocation(),     // 바로 자기 위치!
+        GetActorRotation()     // 혹은 카메라 방향 등, 원하는 회전값
+    );
+
     TArray<AActor*> BacteriaList;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABacteriaBase::StaticClass(), BacteriaList);
 
@@ -77,12 +97,10 @@ void AGemella::GrantShieldsToNearbyBacteria()
     {
         ABacteriaBase* Bacteria = Cast<ABacteriaBase>(Actor);
         if (!Bacteria || Bacteria == this) continue;
-
-        float DistanceToBacteria = FVector::Dist(Bacteria->GetActorLocation(), GetActorLocation());
-
-        if (Bacteria->Shield <= 0.f) // 보호막이 없을 때만 부여
+        if (Bacteria->Shield <= 0.f && Bacteria->getHealth() > 0) // 보호막이 없을 때만 부여
         {
             Bacteria->Shield = Bacteria->MaxShield;
+            Bacteria->ShieldMesh->SetVisibility(true);
             UE_LOG(LogTemp, Log, TEXT("[Gemella] %s에게 보호막 부여"), *Bacteria->GetName());
         }
     }

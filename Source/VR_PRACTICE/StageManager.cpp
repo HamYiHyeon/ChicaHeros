@@ -17,6 +17,12 @@ void AStageManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// 1. 에셋 경로로 나이아가라 시스템 불러오기
+	NiagaraEffect = LoadObject<UNiagaraSystem>(
+		nullptr,
+		TEXT("/Game/Niagara/NS_Cloud.NS_Cloud")
+	);
+
 	// 3초 후 Stage 시작
 	GetWorldTimerManager().SetTimer(DelayStartHandle, this, &AStageManager::StartFirstStage, 3.0f, false);
 }
@@ -34,14 +40,16 @@ void AStageManager::UnregisterBacteria(ABacteriaBase* Bacteria)
 {
 	if (Bacteria)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Destroyed: %s"), *Bacteria->GetName());
 		RegisteredBacteria.Remove(Bacteria);
 	}
 }
 
-void AStageManager::HandlePlayerAttacked()
+void AStageManager::HandlePlayerAttacked(ABacteriaBase* Attacker)
 {
 	UE_LOG(LogTemp, Warning, TEXT("플레이어가 박테리아에게 공격당함!"));
-	OnPlayerAttackedBP(); // 블루프린트 연출 호출
+	float Damage = Attacker->AttackPower;
+	OnPlayerAttackedBP(Damage); // 블루프린트 연출 호출
 }
 
 // Called every frame
@@ -51,7 +59,7 @@ void AStageManager::Tick(float DeltaTime)
 
 	if (!bStageStarted) return; // 3초 딜레이 전에는 아무것도 안 함
 
-	Time -= DeltaTime;
+	if(!bCleared) Time -= DeltaTime;
 
 	if (StageNum == 1 && Time <= 60.f) {
 		StageNum++;
@@ -62,11 +70,21 @@ void AStageManager::Tick(float DeltaTime)
 		SpawnEnemy(Stage3Enemy1, Stage3Enemy1Count, Stage3Enemy2, Stage3Enemy2Count);
 	}
 
-	if (Time < 0) {
+	if (bAllSpawned && RegisteredBacteria.IsEmpty()) {
 		UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
 		if (GI) {
 			GI->bStageCleared = true;
 		}
+		bCleared = true;
+		GameClear();
+	}
+	else if(Time <= 0.f) {
+		UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
+		if (GI) {
+			GI->bStageCleared = false;
+		}
+		bCleared = true;
+		TimeOver();
 	}
 }
 
@@ -89,6 +107,7 @@ void AStageManager::SpawnNextEnemy()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
 
+		if (StageNum == 3 && SpawnPhase == 2) bAllSpawned = true;
 		if (SpawnPhase == 1)
 		{
 			// Enemy1 다 소환했으므로 Enemy2 시작
@@ -113,8 +132,17 @@ void AStageManager::SpawnNextEnemy()
 		FMath::FRandRange(0.f, 360.f),
 		FMath::FRandRange(0.f, 360.f)
 	);
-
 	GetWorld()->SpawnActor<ABacteriaBase>(CurrentClass, SpawnLoc, RandomRot);
+	if (NiagaraEffect)
+	{
+		// 2. 원하는 위치에 이펙트 생성
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			GetWorld(),
+			NiagaraEffect,
+			SpawnLoc,   // 현재 액터 위치(원하는 위치로 변경 가능)
+			RandomRot
+		);
+	}
 	SpawnedCount++;
 }
 

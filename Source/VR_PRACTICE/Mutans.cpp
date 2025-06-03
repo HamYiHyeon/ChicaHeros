@@ -38,7 +38,7 @@ void AMutans::Tick(float DeltaTime)
     Distance = FVector::Dist(GetActorLocation(), CameraComp->GetComponentLocation());
     if (Distance < AttackRange)
     {
-        OnPlayerAttacked.Broadcast();
+        OnPlayerAttacked.Broadcast(this);
         UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
         Destroy();
     }

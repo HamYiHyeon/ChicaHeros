@@ -17,4 +17,8 @@ class VR_PRACTICE_API UMyGameInstance : public UGameInstance
 public:
 	UPROPERTY(BlueprintReadWrite)
 	bool bStageCleared = false;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool GameStart = false;
+
 };
