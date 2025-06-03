@@ -68,36 +68,15 @@ void APrevo::Tick(float DeltaTime)
     }
 }
 
-float APrevo::TakeDamageBac(float DamageAmount)
+void APrevo::OnDeath()
 {
-    float RemainingDamage = DamageAmount;
-
-    if (Shield > 0.f)
+    if (CurrentSplitLevel < MaxSplitLevel)
     {
-        float Absorbed = FMath::Min(Shield, DamageAmount);
-        Shield -= Absorbed;
-        RemainingDamage -= Absorbed;
-
-        UE_LOG(LogTemp, Log, TEXT("[Bacteria] 보호막으로 %f 피해 흡수, 남은 보호막: %f"), Absorbed, Shield);
+        UE_LOG(LogTemp, Warning, TEXT("Split"));
+        Split();
     }
-
-    if (RemainingDamage > 0.f)
-    {
-        Health -= RemainingDamage;
-        if (Health <= 0.f)
-        {
-            if (CurrentSplitLevel < MaxSplitLevel)
-            {
-                UE_LOG(LogTemp, Warning, TEXT("Split"));
-                Split();
-            }
-
-            Destroy();
-        }
-    }
-
-    return DamageAmount;
 }
+
 
 void APrevo::Split()
 {
