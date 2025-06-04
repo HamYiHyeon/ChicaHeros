@@ -15,12 +15,12 @@ public:
 	// Sets default values for this actor's properties
 	Acar();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float movespeed = 1500.f;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float movespeed = 1000.f;
 
 public:	
 	// Called every frame
