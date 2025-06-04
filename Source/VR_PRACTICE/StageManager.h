@@ -9,18 +9,6 @@
 #include "NiagaraSystem.h"
 #include "StageManager.generated.h"
 
-USTRUCT(BlueprintType)
-struct FEnemy
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TSubclassOf<ABacteriaBase>> Enemy;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int EnemyCount;
-};
-
 UCLASS()
 class VR_PRACTICE_API AStageManager : public AActor
 {
@@ -42,11 +30,11 @@ public:
 	void RegisterBacteria(ABacteriaBase* Bacteria);
 	void UnregisterBacteria(ABacteriaBase* Bacteria);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stage")
-	TArray<FEnemy> Wave;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stage")
+	TArray<TSubclassOf<ABacteriaBase>> Enemy;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stage")
-	FEnemy EnemyInfo;;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stage")
+	int EnemyCount;
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<ABacteriaBase*> RegisteredBacteria;
@@ -65,6 +53,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
 	void GameClear();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
+	void MonsterInfo();
 
 	//UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
 	//void SpawnEnemy();
@@ -85,11 +76,11 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool bCleared = false;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "StageSystem")
+	int StageNum = 0;
+
 private:
 	UNiagaraSystem* NiagaraEffect;
-
-	UPROPERTY(VisibleAnywhere, Category = "StageSystem")
-	int StageNum = 0;
 
 	FTimerHandle SpawnTimerHandle;
 	FTimerHandle DelayStartHandle;

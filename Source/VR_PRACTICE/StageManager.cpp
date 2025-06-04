@@ -102,9 +102,9 @@ void AStageManager::StartFirstStage()
 void AStageManager::SpawnNextEnemy()
 {
 	int rand = FMath::RandRange(0, 1);
-	TSubclassOf<ABacteriaBase> CurrentClass = EnemyInfo.Enemy[rand];
+	TSubclassOf<ABacteriaBase> CurrentClass = Enemy[rand];
 	if (CurrentClass && CurrentClass->FindPropertyByName(FName("CurrentState"))) {
-		if (FMath::RandRange(0, 4) > 0) CurrentClass = EnemyInfo.Enemy[(rand + 1) % 2];
+		if (FMath::RandRange(0, 4) > 0) CurrentClass = Enemy[(rand + 1) % 2];
 	}
 	FVector Offset = FMath::VRand() * FMath::FRandRange(0.f, SpawnRadius);
 	FVector SpawnLoc = SpawnOrigin + Offset;
@@ -124,11 +124,12 @@ void AStageManager::SpawnNextEnemy()
 			RandomRot
 		);
 	}
-	SpawnedCount++;
+	EnemyCount--;
 
-	if (SpawnedCount >= Count)
+	if (EnemyCount <= 0)
 	{
 		if (StageNum == 2 && SpawnPhase == 2) bAllSpawned = true;
+		MonsterInfo();
 		GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
 	}
 }
@@ -151,20 +152,16 @@ void AStageManager::SpawnEnemy()
 		0,
 		2.f     // Thickness
 	);
-
-	EnemyInfo = Wave[StageNum - 1];
-	Count = EnemyInfo.EnemyCount;
 	//EnemyClass2 = Enemy2;
 	//Count2 = Enemy2Count;
 
 	//SpawnPhase = 1; // 1´Ü°è: Enemy1
-	SpawnedCount = 0;
 	//TotalSpawnCount = Count1;
 
 	GetWorld()->GetTimerManager().SetTimer(
 		SpawnTimerHandle, this,
 		&AStageManager::SpawnNextEnemy,
-		28.f / Count, true
+		28.f / EnemyCount, true
 	);
 }
 
