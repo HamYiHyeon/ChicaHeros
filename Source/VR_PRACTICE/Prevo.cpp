@@ -29,7 +29,7 @@ void APrevo::Tick(float DeltaTime)
     if (MaxSpeed > MoveSpeed) MoveSpeed += IncSpeed;
 
     //테스트용 삭제 필요
-    TakeDamageBac(0.2f);
+    //TakeDamageBac(0.2f);
 
     if (bIsSpawning)
     {

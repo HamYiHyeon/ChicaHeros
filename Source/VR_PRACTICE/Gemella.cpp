@@ -78,9 +78,8 @@ void AGemella::GrantShieldsToNearbyBacteria()
     for (ABacteriaBase* Bacteria : BacteriaList)
     {
         if (!Bacteria || Bacteria == this) continue;
-        if (Bacteria->Shield <= 0.f && Bacteria->getHealth() > 0) // 보호막이 없을 때만 부여
+        if (!Bacteria->Shield && Bacteria->getHealth() > 0) // 보호막이 없을 때만 부여
         {
-            Bacteria->Shield = Bacteria->MaxShield;
             Bacteria->ShieldMesh->SetVisibility(true);
             UE_LOG(LogTemp, Log, TEXT("[Gemella] %s에게 보호막 부여"), *Bacteria->GetName());
         }

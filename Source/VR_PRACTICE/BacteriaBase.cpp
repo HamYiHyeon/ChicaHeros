@@ -68,34 +68,17 @@ void ABacteriaBase::Tick(float DeltaTime)
     }
 }
 
-float ABacteriaBase::TakeDamageBac(float DamageAmount)
+void ABacteriaBase::TakeDamageBac()
 {
-    float RemainingDamage = DamageAmount;
-
-    if (Shield > 0.f)
+    if (Shield)
     {
-        float Absorbed = FMath::Min(Shield, DamageAmount);
-        Shield -= Absorbed;
-        if (Shield <= 0.f)
-        {
-            ShieldMesh->SetVisibility(false);
-        }
-        RemainingDamage -= Absorbed;
-
-        UE_LOG(LogTemp, Log, TEXT("[Bacteria] 보호막으로 %f 피해 흡수, 남은 보호막: %f"), Absorbed, Shield);
+        ShieldMesh->SetVisibility(false);
+        Shield = false;
     }
-
-    if (RemainingDamage > 0.f)
-    {
-        Health -= RemainingDamage;
-        if (Health <= 0.f)
-        {
-            OnDeath();
-            Destroy();
-        }
+    else {
+        OnDeath();
+        Destroy();
     }
-
-    return DamageAmount;
 }
 
 void ABacteriaBase::Destroyed()

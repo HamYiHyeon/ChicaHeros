@@ -20,16 +20,14 @@ public:
     virtual void Tick(float DeltaTime) override;
     virtual void OnDeath() {};
 
-    // 데미지 입는 함수
-    virtual float TakeDamageBac(float DamageAmount);
+    // 예시: BacteriaBase.h
+    UFUNCTION(BlueprintCallable, Category = "Bacteria")
+    virtual void TakeDamageBac();
 
     bool bShieldAnim = false;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
-    float Shield = 0.f;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
-    float MaxShield = 50.f;
+    bool Shield = false;
 
     UPROPERTY(BlueprintAssignable)
     FOnPlayerAttacked OnPlayerAttacked;
@@ -38,6 +36,7 @@ public:
     UPROPERTY(EditAnywhere, Category = "Bacteria")
     float AttackPower = 10.f;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bacteria")
     UStaticMeshComponent* ShieldMesh;
 
     float getHealth();
