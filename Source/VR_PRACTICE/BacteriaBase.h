@@ -42,7 +42,6 @@ public:
 
     float getHealth();
 
-    UNiagaraSystem* NiagaraEffect;
 protected:
     virtual void BeginPlay() override;
     virtual void Destroyed() override;

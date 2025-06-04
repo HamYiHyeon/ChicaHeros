@@ -104,7 +104,8 @@ void AStageManager::SpawnNextEnemy()
 	int rand = FMath::RandRange(0, 1);
 	TSubclassOf<ABacteriaBase> CurrentClass = Enemy[rand];
 	if (CurrentClass && CurrentClass->FindPropertyByName(FName("CurrentState"))) {
-		if (FMath::RandRange(0, 4) > 0) CurrentClass = Enemy[(rand + 1) % 2];
+		if(CurrentClass->FindPropertyByName(FName("ShieldGrantInterval")))
+			if (FMath::RandRange(0, 4) > 0) CurrentClass = Enemy[(rand + 1) % 2];
 	}
 	FVector Offset = FMath::VRand() * FMath::FRandRange(0.f, SpawnRadius);
 	FVector SpawnLoc = SpawnOrigin + Offset;

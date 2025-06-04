@@ -43,5 +43,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Shield")
 	float ShieldGrantInterval = 5.0f;
 
+	// Gemella.h
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	UNiagaraSystem* NiagaraEffect;
+
 	FVector RandomMoveTarget;
 };

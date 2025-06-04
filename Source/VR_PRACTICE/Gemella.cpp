@@ -19,21 +19,6 @@ AGemella::AGemella() {
 void AGemella::BeginPlay()
 {
     Super::BeginPlay();
-
-    PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-    if (PlayerPawn)
-    {
-        CameraComp = PlayerPawn->FindComponentByClass<UCameraComponent>();
-    }
-    AStageManager* StageManager = Cast<AStageManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AStageManager::StaticClass()));
-    if (StageManager)
-    {
-        StageManager->RegisterBacteria(this);
-    }
-    NiagaraEffect = LoadObject<UNiagaraSystem>(
-        nullptr,
-        TEXT("/Game/Niagara/NS_Wave.NS_Wave")
-    );
     // 일정 시간마다 보호막 부여 함수 실행
     GetWorld()->GetTimerManager().SetTimer(
         ShieldGrantTimer,
