@@ -54,7 +54,7 @@ void ABacteriaBase::BeginPlay()
         StageManager->RegisterBacteria(this);
     }
     // 머티리얼/스케일/위치/투명도 등 추가 세팅
-    ShieldMesh->SetVisibility(false); // 처음엔 안 보이게
+    ShieldMesh->SetVisibility(Shield); // 처음엔 안 보이게
     ShieldMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision); // 충돌 X
     ShieldMesh->SetWorldScale3D(GetActorScale3D() * 2.f); // 본체보다 조금 크게
 }
