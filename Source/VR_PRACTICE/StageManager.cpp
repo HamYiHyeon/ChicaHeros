@@ -58,12 +58,12 @@ void AStageManager::Tick(float DeltaTime)
 
 	if (!bStageStarted) return; // 3초 딜레이 전에는 아무것도 안 함
 
-	if(!bCleared) Time -= DeltaTime;
+	if(!bCleared) Time += DeltaTime;
 
-	if (StageNum == 1 && Time <= 60.f) {
+	if (StageNum == 1 && Time > 30.f) {
 		SpawnEnemy();
 	}
-	else if (StageNum == 2 && Time <= 30.f) {
+	else if (StageNum == 2 && Time > 60.f) {
 		SpawnEnemy();
 	}
 
@@ -77,22 +77,12 @@ void AStageManager::Tick(float DeltaTime)
 		bCleared = true;
 		GameClear();
 	}
-	else if(Time <= 0.f) {
-		/*
-		UMyGameInstance* GI = Cast<UMyGameInstance>(GetGameInstance());
-		if (GI) {
-			GI->bStageCleared = false;
-		}
-		*/
-		bCleared = true;
-		TimeOver();
-	}
 }
 
 void AStageManager::StartFirstStage()
 {
 	// Stage1 시작 시점에서 Time 초기화 및 스폰
-	Time = 90.f;
+	Time = 0.f;
 	StageNum = 0;
 	bStageStarted = true;
 

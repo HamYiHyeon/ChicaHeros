@@ -11,7 +11,7 @@ ATreponema::ATreponema() {
 
     Health = 150.0f;
     AttackRange = 1500.f;
-    MoveSpeed = 300.f;
+    MoveSpeed = 600.f;
     CurMoveSpeed = MoveSpeed;
 }
 

@@ -70,15 +70,8 @@ void ABacteriaBase::Tick(float DeltaTime)
 
 void ABacteriaBase::TakeDamageBac()
 {
-    if (Shield)
-    {
-        ShieldMesh->SetVisibility(false);
-        Shield = false;
-    }
-    else {
-        OnDeath();
-        Destroy();
-    }
+    OnDeath();
+    Destroy();
 }
 
 void ABacteriaBase::Destroyed()

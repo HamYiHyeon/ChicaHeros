@@ -29,6 +29,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
     bool Shield = false;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
+    bool bShieldHitRecently = false;
+
     UPROPERTY(BlueprintAssignable)
     FOnPlayerAttacked OnPlayerAttacked;
 
