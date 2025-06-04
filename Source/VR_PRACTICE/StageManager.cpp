@@ -1,4 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "StageManager.h"
@@ -119,7 +120,7 @@ void AStageManager::SpawnNextEnemy()
 
 	if (EnemyCount <= 0)
 	{
-		if (StageNum == 2 && SpawnPhase == 2) bAllSpawned = true;
+		if (StageNum == 2) bAllSpawned = true;
 		MonsterInfo();
 		GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
 	}
