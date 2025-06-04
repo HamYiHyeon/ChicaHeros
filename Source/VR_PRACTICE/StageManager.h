@@ -87,7 +87,7 @@ private:
 
 	bool bStageStarted = false; // Stage1 스폰 여부
 
-	int32 SpawnedCount;
+	//int32 SpawnedCount;
 
 	int32 Count;
 
