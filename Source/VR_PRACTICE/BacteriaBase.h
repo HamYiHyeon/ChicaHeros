@@ -23,6 +23,8 @@ public:
     // 데미지 입는 함수
     virtual float TakeDamageBac(float DamageAmount);
 
+    bool bShieldAnim = false;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
     float Shield = 0.f;
 

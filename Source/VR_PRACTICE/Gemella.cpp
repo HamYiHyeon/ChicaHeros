@@ -32,7 +32,7 @@ void AGemella::BeginPlay()
     }
     NiagaraEffect = LoadObject<UNiagaraSystem>(
         nullptr,
-        TEXT("/Game/Niagara/NS_ShieldWave.NS_ShieldWave")
+        TEXT("/Game/Niagara/NS_Wave.NS_Wave")
     );
     // 일정 시간마다 보호막 부여 함수 실행
     GetWorld()->GetTimerManager().SetTimer(
@@ -100,6 +100,13 @@ void AGemella::GrantShieldsToNearbyBacteria()
             UE_LOG(LogTemp, Log, TEXT("[Gemella] %s에게 보호막 부여"), *Bacteria->GetName());
         }
     }
+    // 5. 충돌 판정
+    //UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), Distance);
+    if (CurrentState == EGemellaState::Wander)
+    {
+        OnPlayerAttacked.Broadcast(this);
+        UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
+    }
 }
 
 void AGemella::MoveToward(FVector TargetLocation, float DeltaTime)
@@ -127,6 +134,8 @@ void AGemella::HandleAttackState(float DeltaTime)
     {
         FVector RandOffset = UKismetMathLibrary::RandomUnitVector() * 600.f;
         RandomMoveTarget = GetActorLocation() + RandOffset;
+        if (RandomMoveTarget.Z <= CameraComp->GetComponentLocation().Z + 10.f)
+            RandomMoveTarget.Z = CameraComp->GetComponentLocation().Z + FMath::RandRange(10.f, 40.f);
     }
 
     MoveToward(RandomMoveTarget, DeltaTime);

@@ -61,12 +61,10 @@ void AStageManager::Tick(float DeltaTime)
 	if(!bCleared) Time -= DeltaTime;
 
 	if (StageNum == 1 && Time <= 60.f) {
-		StageNum++;
-		SpawnEnemy(Stage2Enemy1, Stage2Enemy1Count, Stage2Enemy2, Stage2Enemy2Count);
+		SpawnEnemy();
 	}
 	else if (StageNum == 2 && Time <= 30.f) {
-		StageNum++;
-		SpawnEnemy(Stage3Enemy1, Stage3Enemy1Count, Stage3Enemy2, Stage3Enemy2Count);
+		SpawnEnemy();
 	}
 
 	if (bAllSpawned && RegisteredBacteria.IsEmpty()) {
@@ -98,36 +96,16 @@ void AStageManager::StartFirstStage()
 	StageNum = 0;
 	bStageStarted = true;
 
-	SpawnEnemy(Stage1Enemy1, Stage1Enemy1Count, Stage1Enemy2, Stage1Enemy2Count);
-	StageNum++;
+	SpawnEnemy();
 }
 
 void AStageManager::SpawnNextEnemy()
 {
-	TSubclassOf<ABacteriaBase> CurrentClass = (SpawnPhase == 1) ? EnemyClass1 : EnemyClass2;
-
-	if (SpawnedCount >= TotalSpawnCount)
-	{
-		GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
-
-		if (StageNum == 3 && SpawnPhase == 2) bAllSpawned = true;
-		if (SpawnPhase == 1)
-		{
-			// Enemy1 다 소환했으므로 Enemy2 시작
-			SpawnPhase = 2;
-			SpawnedCount = 0;
-			TotalSpawnCount = Count2;
-
-			GetWorld()->GetTimerManager().SetTimer(
-				SpawnTimerHandle, this,
-				&AStageManager::SpawnNextEnemy,
-				0.3f, true
-			);
-		}
-
-		return;
+	int rand = FMath::RandRange(0, 1);
+	TSubclassOf<ABacteriaBase> CurrentClass = EnemyInfo.Enemy[rand];
+	if (CurrentClass && CurrentClass->FindPropertyByName(FName("CurrentState"))) {
+		if (FMath::RandRange(0, 4) > 0) CurrentClass = EnemyInfo.Enemy[(rand + 1) % 2];
 	}
-
 	FVector Offset = FMath::VRand() * FMath::FRandRange(0.f, SpawnRadius);
 	FVector SpawnLoc = SpawnOrigin + Offset;
 	FRotator RandomRot = FRotator(
@@ -147,10 +125,17 @@ void AStageManager::SpawnNextEnemy()
 		);
 	}
 	SpawnedCount++;
+
+	if (SpawnedCount >= Count)
+	{
+		if (StageNum == 2 && SpawnPhase == 2) bAllSpawned = true;
+		GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
+	}
 }
 
-void AStageManager::SpawnEnemy(TSubclassOf<ABacteriaBase> Enemy1, int Enemy1Count, TSubclassOf<ABacteriaBase> Enemy2, int Enemy2Count)
+void AStageManager::SpawnEnemy()
 {
+	StageNum++;
 	SpawnOrigin = GetActorLocation() + FVector(0.f, 0.f, 1400.f);
 	SpawnRadius = 1900.f;
 
@@ -167,21 +152,22 @@ void AStageManager::SpawnEnemy(TSubclassOf<ABacteriaBase> Enemy1, int Enemy1Coun
 		2.f     // Thickness
 	);
 
-	EnemyClass1 = Enemy1;
-	Count1 = Enemy1Count;
-	EnemyClass2 = Enemy2;
-	Count2 = Enemy2Count;
+	EnemyInfo = Wave[StageNum - 1];
+	Count = EnemyInfo.EnemyCount;
+	//EnemyClass2 = Enemy2;
+	//Count2 = Enemy2Count;
 
-	SpawnPhase = 1; // 1단계: Enemy1
+	//SpawnPhase = 1; // 1단계: Enemy1
 	SpawnedCount = 0;
-	TotalSpawnCount = Count1;
+	//TotalSpawnCount = Count1;
 
 	GetWorld()->GetTimerManager().SetTimer(
 		SpawnTimerHandle, this,
 		&AStageManager::SpawnNextEnemy,
-		0.3f, true
+		28.f / Count, true
 	);
 }
+
 
 void AStageManager::TickDisable()
 {

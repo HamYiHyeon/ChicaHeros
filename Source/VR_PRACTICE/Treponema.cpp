@@ -52,6 +52,8 @@ void ATreponema::HandleAttackState(float DeltaTime)
     {
         FVector RandOffset = UKismetMathLibrary::RandomUnitVector() * 600.f;
         RandomMoveTarget = GetActorLocation() + RandOffset;
+        if (RandomMoveTarget.Z <= CameraComp->GetComponentLocation().Z + 10.f)
+            RandomMoveTarget.Z = CameraComp->GetComponentLocation().Z + FMath::RandRange(10.f, 40.f);
     }
 
     MoveToward(RandomMoveTarget, DeltaTime);

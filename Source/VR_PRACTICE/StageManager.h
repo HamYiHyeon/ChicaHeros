@@ -15,28 +15,10 @@ struct FEnemy
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<ABacteriaBase> Enemy;
+	TArray<TSubclassOf<ABacteriaBase>> Enemy;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int EnemyCount;
-};
-
-USTRUCT(BlueprintType)
-struct FWave
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FEnemy> Wave;
-};
-
-USTRUCT(BlueprintType)
-struct FStage
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FWave> Wave;
 };
 
 UCLASS()
@@ -61,7 +43,10 @@ public:
 	void UnregisterBacteria(ABacteriaBase* Bacteria);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stage")
-	TArray<FStage> Stage;
+	TArray<FEnemy> Wave;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stage")
+	FEnemy EnemyInfo;;
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<ABacteriaBase*> RegisteredBacteria;
@@ -81,6 +66,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
 	void GameClear();
 
+	//UFUNCTION(BlueprintImplementableEvent, Category = "Stage")
+	//void SpawnEnemy();
+	void SpawnEnemy();
+
 	UFUNCTION(BlueprintCallable, Category = "Stage")
 	void TickDisable();
 
@@ -90,6 +79,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APawn* PlayerPawn;
 
+	UPROPERTY(VisibleAnywhere, Category = "StageSystem")
+	float Time = 100.f;
+
 	UPROPERTY(BlueprintReadWrite)
 	bool bCleared = false;
 
@@ -98,48 +90,15 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "StageSystem")
 	int StageNum = 0;
-	UPROPERTY(VisibleAnywhere, Category = "StageSystem")
-	float Time = 90.f;
-
-	UPROPERTY(EditAnywhere, Category = "Stage1")
-	TSubclassOf<ABacteriaBase> Stage1Enemy1;
-	UPROPERTY(EditAnywhere, Category = "Stage1")
-	int Stage1Enemy1Count = 1;
-	UPROPERTY(EditAnywhere, Category = "Stage1")
-	TSubclassOf<ABacteriaBase> Stage1Enemy2;
-	UPROPERTY(EditAnywhere, Category = "Stage1")
-	int Stage1Enemy2Count = 1;
-
-	UPROPERTY(EditAnywhere, Category = "Stage2")
-	TSubclassOf<ABacteriaBase> Stage2Enemy1;
-	UPROPERTY(EditAnywhere, Category = "Stage2")
-	int Stage2Enemy1Count = 1;
-	UPROPERTY(EditAnywhere, Category = "Stage2")
-	TSubclassOf<ABacteriaBase> Stage2Enemy2;
-	UPROPERTY(EditAnywhere, Category = "Stage2")
-	int Stage2Enemy2Count = 1;
-
-	UPROPERTY(EditAnywhere, Category = "Stage3")
-	TSubclassOf<ABacteriaBase> Stage3Enemy1;
-	UPROPERTY(EditAnywhere, Category = "Stage3")
-	int Stage3Enemy1Count = 1;
-	UPROPERTY(EditAnywhere, Category = "Stage3")
-	TSubclassOf<ABacteriaBase> Stage3Enemy2;
-	UPROPERTY(EditAnywhere, Category = "Stage3")
-	int Stage3Enemy2Count = 1;
 
 	FTimerHandle SpawnTimerHandle;
 	FTimerHandle DelayStartHandle;
 
 	bool bStageStarted = false; // Stage1 스폰 여부
 
-	int32 TotalSpawnCount;
 	int32 SpawnedCount;
 
-	TSubclassOf<ABacteriaBase> EnemyClass1;
-	TSubclassOf<ABacteriaBase> EnemyClass2;
-	int32 Count1;
-	int32 Count2;
+	int32 Count;
 
 	int32 SpawnPhase; // 1 또는 2
 	bool bAllSpawned = false;
@@ -148,6 +107,5 @@ private:
 	float SpawnRadius;
 	void StartFirstStage();
 	void SpawnNextEnemy();
-	void SpawnEnemy(TSubclassOf<ABacteriaBase> Enemy1, int Enemy1Count, TSubclassOf<ABacteriaBase> Enemy2, int Enemy2Count);
 };
 
