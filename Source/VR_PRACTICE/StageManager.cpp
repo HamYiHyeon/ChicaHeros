@@ -132,6 +132,7 @@ void AStageManager::SpawnEnemy()
 	SpawnOrigin = GetActorLocation() + FVector(0.f, 0.f, 1400.f);
 	SpawnRadius = 1900.f;
 
+	/*
 	// 스폰 범위 시각화
 	DrawDebugSphere(
 		GetWorld(),
@@ -144,6 +145,7 @@ void AStageManager::SpawnEnemy()
 		0,
 		2.f     // Thickness
 	);
+	*/
 	//EnemyClass2 = Enemy2;
 	//Count2 = Enemy2Count;
 
