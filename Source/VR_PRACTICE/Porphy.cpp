@@ -63,6 +63,16 @@ void APorphy::Burst(float DeltaTime) {
     SpinSpeedX *= 1.02f;
     SpinSpeedY *= 1.02f;
     SpinSpeedZ *= 1.02f;
+
+    float LerpAlpha = FMath::Clamp(CountDown / 3.f, 0.f, 1.f); // 3초에 걸쳐 변화
+
+    CurrentIntensity = CurrentIntensity * 1.035f;
+    if (DynMaterial)
+    {
+        FLinearColor EmissiveColor(CurrentIntensity, CurrentIntensity, CurrentIntensity);
+        DynMaterial->SetVectorParameterValue(FName("EmissiveColorParam"), EmissiveColor);
+    }
+
     if (CountDown > 3.0f) Boom();
 }
 
@@ -79,4 +89,12 @@ void APorphy::Boom() {
     OnPlayerAttacked.Broadcast(this);
     UGameplayStatics::ApplyDamage(PlayerPawn, AttackPower, nullptr, this, nullptr);
     Destroy();
+}
+
+void APorphy::ChildBegin() {
+    if (MeshComponent) // 예: StaticMeshComponent
+    {
+        // 0번 슬롯의 머티리얼에서 동적 인스턴스 생성
+        DynMaterial = MeshComponent->CreateDynamicMaterialInstance(0);
+    }
 }

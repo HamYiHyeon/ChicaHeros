@@ -95,4 +95,6 @@ protected:
 
     UPROPERTY(EditAnywhere, Category = "RotateSpeed")
     float SpinSpeedZ = 60.f;
+
+    virtual void ChildBegin() {};
 };

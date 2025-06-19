@@ -29,10 +29,17 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	EPorphyState CurrentState = EPorphyState::Approaching;
 
+	UPROPERTY(VisibleAnywhere)
+	UMaterialInstanceDynamic* DynMaterial;
+
 	void Burst(float DeltaTime);
 	void Approaching(float DeltaTime);
 	void Boom();
 	float CountDown = 0.f;
 
+	float CurrentIntensity = 0.001f;
+
 	UNiagaraSystem* NiagaraEffect;
+
+	virtual void ChildBegin() override;
 };
