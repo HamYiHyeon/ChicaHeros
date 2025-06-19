@@ -23,16 +23,6 @@ protected:
 
     void Split();
 
-    UPROPERTY(EditAnywhere, Category = "Sprit")
-    float SpinSpeedX = 30.f;
-
-    UPROPERTY(EditAnywhere, Category = "Sprit")
-    float SpinSpeedY = 45.f;
-
-    UPROPERTY(EditAnywhere, Category = "Sprit")
-    float SpinSpeedZ = 60.f;
-
-
     UPROPERTY(EditAnywhere, Category = "Split")
     int32 CurrentSplitLevel = 0;
 

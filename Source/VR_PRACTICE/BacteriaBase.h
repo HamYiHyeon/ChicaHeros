@@ -86,4 +86,13 @@ protected:
 
     // 플레이어 위치 캐시
     FVector PlayerLocation;
+
+    UPROPERTY(EditAnywhere, Category = "RotateSpeed")
+    float SpinSpeedX = 30.f;
+
+    UPROPERTY(EditAnywhere, Category = "RotateSpeed")
+    float SpinSpeedY = 45.f;
+
+    UPROPERTY(EditAnywhere, Category = "RotateSpeed")
+    float SpinSpeedZ = 60.f;
 };
