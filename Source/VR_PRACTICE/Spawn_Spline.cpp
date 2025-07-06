@@ -116,6 +116,9 @@ void ASpawn_Spline::SpawnHand()
 			SkeletalMeshComp->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 			SkeletalMeshComp->SetGenerateOverlapEvents(true);
 			SkeletalMeshComp->SetNotifyRigidBodyCollision(true); // Hit 이벤트용
+			//SkeletalMeshComp->SetSimulatePhysics(true);
+			//SkeletalMeshComp->WakeAllRigidBodies(); // 바로 물리 활성화
+
 		}
 
 		// ✅ 구조체 생성 및 회전 저장
