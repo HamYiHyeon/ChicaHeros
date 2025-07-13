@@ -75,6 +75,31 @@ void AHandPoseJudgeActor::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("✅ 오른손 SpawnedSplineActor 할당됨: %s"), *Label);
 		}
 	}
+
+	//ProgressToothActor 찾기
+	for (TActorIterator<AProgressToothActor> It(GetWorld()); It; ++It)
+	{
+		ToothProgressActor = *It;
+		UE_LOG(LogTemp, Warning, TEXT("🦷 ToothProgressActor 할당됨: %s"), *ToothProgressActor->GetName());
+		break;
+	}
+
+	//ProgressRotatingActor 찾기
+	for (TActorIterator<AProgressRotatingActor> It(GetWorld()); It; ++It)
+	{
+		RotatingActor = *It;
+		UE_LOG(LogTemp, Warning, TEXT("🦷 RotatingActor 할당됨: %s"), *RotatingActor->GetName());
+		break;
+	}
+
+	//ProgressRotatingActor2 찾기
+	for (TActorIterator<AProgressRotatingActor2> It(GetWorld()); It; ++It)
+	{
+		RotatingActor2 = *It;
+		UE_LOG(LogTemp, Warning, TEXT("🦷 RotatingActor2 할당됨: %s"), *RotatingActor2->GetName());
+		break;
+	}
+
 }
 
 void AHandPoseJudgeActor::Tick(float DeltaTime)
@@ -124,7 +149,7 @@ void AHandPoseJudgeActor::CompareHandsAndUpdateProgress()
 				Hand.HandMesh->GetComponentLocation(),
 				SpawnedMesh->GetComponentLocation());
 
-			UE_LOG(LogTemp, Log, TEXT("📏 [%s] 루트 거리: %.2f (허용: %.2f)"), *Hand.Label, Dist, MatchingDistanceThreshold);
+			//UE_LOG(LogTemp, Log, TEXT("📏 [%s] 루트 거리: %.2f (허용: %.2f)"), *Hand.Label, Dist, MatchingDistanceThreshold);
 
 			if (Dist > MatchingDistanceThreshold) continue;
 
@@ -132,29 +157,46 @@ void AHandPoseJudgeActor::CompareHandsAndUpdateProgress()
 
 			for (const FName& Bone : Hand.BoneList)
 			{
-				const FTransform VRBoneWorld = Hand.HandMesh->GetSocketTransform(Bone, RTS_World);
+				const FTransform VRBoneWorld = Hand.HandMesh->GetSocketTransform(Bone, RTS_World);	// 피직스 에셋에 대한 월드 좌표계 기준 위치
 				const FTransform SpawnedBoneWorld = SpawnedMesh->GetSocketTransform(Bone, RTS_World);
 
 				const float PosDiff = FVector::Dist(VRBoneWorld.GetLocation(), SpawnedBoneWorld.GetLocation());
 				const float RotDiff = VRBoneWorld.GetRotation().AngularDistance(SpawnedBoneWorld.GetRotation()) * (180.f / PI);
 
-				UE_LOG(LogTemp, Log,
+				/*UE_LOG(LogTemp, Log,
 					TEXT("🔍 [%s] Bone: %s | PosDiff: %.2f | RotDiff: %.2f"),
 					*Hand.Label, *Bone.ToString(), PosDiff, RotDiff);
-
+					*/
 				if (PosDiff <= PositionTolerance && RotDiff <= RotationTolerance)
 				{
 					MatchedCount++;
 				}
 			}
 
-			UE_LOG(LogTemp, Log, TEXT("📊 [%s] 매칭된 본 수: %d / %d"), *Hand.Label, MatchedCount, Hand.BoneList.Num());
+			//UE_LOG(LogTemp, Log, TEXT("📊 [%s] 매칭된 본 수: %d / %d"), *Hand.Label, MatchedCount, Hand.BoneList.Num());
 
 			if (MatchedCount >= 4)
 			{
 				bAnyMatch = true;
-				Progress += 0.1f;
-				UE_LOG(LogTemp, Warning, TEXT("🎉 [%s] 손 포즈 일치! 진행도: %.2f"), *Hand.Label, Progress);
+				Progress += 5.0f;
+				//UE_LOG(LogTemp, Warning, TEXT("🎉 [%s] 손 포즈 일치! 진행도: %.2f"), *Hand.Label, Progress);
+
+				// 손 매칭 진행도 전달
+				if (ToothProgressActor)
+				{
+					ToothProgressActor->OnProgressUpdated(Progress);
+				}
+				
+				// 이번엔 회전해야 하는 액터에 진행도 전달
+				if (RotatingActor)
+				{
+					RotatingActor->OnProgressUpdate_Rot(Progress);
+				}
+
+				if (RotatingActor2)
+				{
+					RotatingActor2->OnProgressUpdate_Rot(Progress);
+				}
 
 				// ✅ 파티클 이펙트 생성
 				if (MatchingEffect)
@@ -177,6 +219,6 @@ void AHandPoseJudgeActor::CompareHandsAndUpdateProgress()
 
 	if (!bAnyMatch)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("❌ 손 포즈 불일치 (가까운 손은 있었지만 포즈 미일치)"));
+		//UE_LOG(LogTemp, Warning, TEXT("❌ 손 포즈 불일치 (가까운 손은 있었지만 포즈 미일치)"));
 	}
 }
