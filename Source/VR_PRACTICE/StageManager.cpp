@@ -86,12 +86,18 @@ void AStageManager::StartFirstStage()
 
 void AStageManager::SpawnNextEnemy()
 {
+	int rand = FMath::RandRange(0, 1);
+	TSubclassOf<ABacteriaBase> CurrentClass = Enemy[rand];
+	if (CurrentClass && CurrentClass->FindPropertyByName(FName("CurrentState"))) {
+		if(CurrentClass->FindPropertyByName(FName("ShieldGrantInterval")))
+			if (FMath::RandRange(0, 4) > 0) CurrentClass = Enemy[(rand + 1) % 2];
+	}
 	FVector2D Rand2D = FMath::RandPointInCircle(SpawnRadius);
 	FVector Offset(Rand2D.X, Rand2D.Y, 0.f);
 	FVector SpawnLoc = SpawnPoint[FMath::RandRange(0, SpawnPointNum)] + Offset;
 	FRotator RandomRot = FRotator(0, 0, 0);
 	ABacteriaBase* SpawnedBacteria = GetWorld()->SpawnActorDeferred<ABacteriaBase>(
-		Enemy[0],
+		CurrentClass,
 		FTransform(RandomRot, SpawnLoc),
 		this,
 		nullptr,
@@ -114,9 +120,9 @@ void AStageManager::SpawnNextEnemy()
 			true                       // 파괴 시 자동 삭제 여부
 		);
 	}
-	Enemy.RemoveAt(0);
+	EnemyCount--;
 
-	if (Enemy.Num() <= 0)
+	if (EnemyCount <= 0)
 	{
 		if (StageNum == 2) bAllSpawned = true;
 		MonsterInfo();
@@ -152,7 +158,7 @@ void AStageManager::SpawnEnemy()
 	GetWorld()->GetTimerManager().SetTimer(
 		SpawnTimerHandle, this,
 		&AStageManager::SpawnNextEnemy,
-		1.f, true
+		28.f / EnemyCount, true
 	);
 }
 

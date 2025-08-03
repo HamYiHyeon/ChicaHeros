@@ -33,10 +33,6 @@ ABacteriaBase::ABacteriaBase()
         ShieldMesh->SetStaticMesh(ShieldAsset.Object);
     }
 
-    DeathEffect = LoadObject<UNiagaraSystem>(
-        nullptr,
-        TEXT("/Game/Niagara/NS_Cloud.NS_Cloud")
-    );
     // 초기 체력
     Health = 100.0f;
 }
@@ -85,12 +81,12 @@ void ABacteriaBase::HitBac(AActor* Actor)
 {
     float HitDamage = 0.f;
     if (Actor->Tags.Contains("Bullet0")) {
-        HitDamage = 40.f;
+        HitDamage = 10.f;
         Actor->Destroy();
     }
-    else if (Actor->Tags.Contains("Bullet1")) HitDamage = 30.f;
+    else if (Actor->Tags.Contains("Bullet1")) HitDamage = 20.f;
     else if (Actor->Tags.Contains("Bullet2")) {
-        HitDamage = 40.f;
+        HitDamage = 3.f;
         Actor->Destroy();
     }
     else if (Actor->ActorHasTag("Pistol")) {
@@ -102,39 +98,23 @@ void ABacteriaBase::HitBac(AActor* Actor)
     TakeDamageBac(HitDamage);
 }
 
-void ABacteriaBase::ClearTimer()
-{
-    GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
-}
-
 void ABacteriaBase::TakeDamageBac(float HitDamage)
 {
     if (bShieldHitRecently) return;
-    float TempDam = ShieldHP - HitDamage;
-    if (TempDam > 0.f) {
-        ShieldHP = TempDam;
-        if (TempDam <= 0.f) {
-            bShieldHitRecently = true;
-            ShieldMesh->SetHiddenInGame(true);
-            GetWorldTimerManager().SetTimerForNextTick([this]()
-                {
-                    bShieldHitRecently = false;
-                });
-        }
+    if (Shield) {
+        Shield = false;
+        bShieldHitRecently = true;
+        ShieldMesh->SetHiddenInGame(true);
+        GetWorldTimerManager().SetTimerForNextTick([this]()
+            {
+                bShieldHitRecently = false;
+            });
     }
     else {
-        Health += TempDam;
+        Health -= HitDamage;
         UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health);
         if (Health <= 0.f) {
             OnDeath();
-            if (DeathEffect) {
-                // 2. 원하는 위치에 이펙트 생성
-                UNiagaraFunctionLibrary::SpawnSystemAtLocation(
-                    GetWorld(),
-                    DeathEffect,
-                    GetActorLocation()
-                );
-            }
             Destroy();
         }
     }
@@ -142,7 +122,24 @@ void ABacteriaBase::TakeDamageBac(float HitDamage)
 
 void ABacteriaBase::TakeDamageBacPistol()
 {
-    TakeDamageBac(10.f);
+    if (bShieldHitRecently) return;
+    if (Shield) {
+        Shield = false;
+        bShieldHitRecently = true;
+        ShieldMesh->SetHiddenInGame(true);
+        GetWorldTimerManager().SetTimerForNextTick([this]()
+            {
+                bShieldHitRecently = false;
+            });
+    }
+    else {
+        Health -= 1.f;
+        UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health);
+        if (Health <= 0.f) {
+            OnDeath();
+            Destroy();
+        }
+    }
 }
 
 void ABacteriaBase::Destroyed()
@@ -176,7 +173,7 @@ void ABacteriaBase::LaunchBounce()
     else {
         BounceDir = FVector(X, Y, DownToUpRate);
     }
-    MeshComponent->AddImpulse(BounceDir * Force * Impulse, NAME_None, true);
+    MeshComponent->AddImpulse(BounceDir * Force, NAME_None, true);
 
     GetWorldTimerManager().SetTimerForNextTick([this]()
         {

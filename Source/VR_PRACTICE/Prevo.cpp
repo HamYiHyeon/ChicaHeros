@@ -16,7 +16,6 @@ APrevo::APrevo() {
 
     Point = 50;
 
-    Impulse = 0.9f;
     UE_LOG(LogTemp, Warning, TEXT("Prevo Spawn"));
 }
 

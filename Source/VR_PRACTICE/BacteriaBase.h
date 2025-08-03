@@ -36,9 +36,6 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Bacteria")
     virtual void HitBac(AActor* Actor);
 
-    UFUNCTION(BlueprintCallable, Category = "Bacteria")
-    virtual void ClearTimer();
-
     bool bShieldAnim = false;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
@@ -46,9 +43,6 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
     bool Shield = false;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
-    float ShieldHP = 0.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
     bool bShieldHitRecently = false;
@@ -77,8 +71,6 @@ public:
 protected:
     EBacteriaState CurrentState = EBacteriaState::Bounced;
 
-    UNiagaraSystem* DeathEffect;
-
     virtual void BeginPlay() override;
     virtual void Destroyed() override;
 
@@ -96,7 +88,8 @@ protected:
 
     // 최대 이동 속도
     UPROPERTY(EditAnywhere, Category = "Bacteria")
-    float Impulse = 1.f;
+    float MaxSpeed;
+    float IncSpeed = 5.f;
 
     // 회전 속도
     UPROPERTY(EditAnywhere, Category = "Bacteria")
